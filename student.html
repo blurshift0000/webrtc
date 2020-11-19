@@ -1,0 +1,812 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title> Q-learning Video Streaming Student Portal </title>
+
+    <!-- Favicon -->
+    <link rel="icon" href="dist/media/img/favicon.png" type="image/png">
+
+    <!-- Google Nunito font -->
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@200;300;400;600;700&amp;display=swap" rel="stylesheet">
+
+    <!-- Themify icons -->
+    <link href="dist/icons/themify/themify-icons.css" rel="stylesheet">
+
+    <!-- Material design icons -->
+    <link href="dist/icons/materialicons/css/materialdesignicons.min.css" rel="stylesheet">
+
+    <!-- Bundle styles -->
+    <link rel="stylesheet" href="dist/vendor/bundle.css">
+
+    <!-- Slick -->
+    <link rel="stylesheet" href="dist/vendor/slick/slick-theme.css">
+    <link rel="stylesheet" href="dist/vendor/slick/slick.css">
+
+    <!-- Fancybox -->
+    <link rel="stylesheet" href="dist/vendor/fancybox/jquery.fancybox.min.css" type="text/css"/>
+
+    <!-- Intro js -->
+    <link rel="stylesheet" href="dist/vendor/introjs/introjs.css" type="text/css"/>
+
+    <!-- App styles -->
+    <link rel="stylesheet" href="dist/css/app.min.css">
+    <link rel="stylesheet" href="dist/css/app.min2.css">
+
+    <!-- from initial teacher.html -->
+    <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous"> -->
+
+    <style>
+      .video_canvas{
+        border-top-left-radius: .75rem;
+        border-top-right-radius: .75rem;
+        /*background-color: #3B5998;*/
+        margin-bottom: 0px;
+        margin-top: 0%;
+        border-bottom-left-radius: .75rem;
+        border-bottom-right-radius: .75rem;
+        padding: 5px;
+        background-color : #3B5998;
+      }
+
+    @media screen and (min-width: 1100px) {
+          video#js-video-partner {
+            max-width: 40%;
+          }
+          div.vid_media {
+            max-width: 44%;
+            padding-right: 0px; 
+            margin-top: 10px;
+          }
+          div.chat-header_respons{
+            padding: 0px !important;
+            margin-top: 0px; 
+            min-width: 103%;
+          }
+          div.chat-header_respons2 {
+            padding: 0px !important;
+            margin-top: 0px; 
+            min-width: 100%;
+          }
+          figure.responsive_avatar {
+            min-width:44px;
+            }
+          div.class_session_id {
+                min-width: 80%;
+            }
+          div.class_session_id2 {
+                min-width: 83%;
+            }
+          ul.action_responsive{
+            min-width: 40%;
+            margin-top: 1%;
+          }
+          div.vidstream_sec {
+            padding: 30px;
+            border-radius: .75rem; 
+            background-color: #fff; 
+            min-width: 103%;
+            }
+    }
+    @media screen and (max-width: 414px) {
+        video#js-video-partner {
+            max-width: 100%;
+          }
+          div.vid_media {
+            max-width: 100%;
+            padding-right: 0px; 
+            margin-top: 18%;
+          }
+          div.chat-header_respons{
+            padding: 0px !important;
+            margin-top: 0px; 
+            min-width: 100%;
+            margin-top: 0px;
+          }
+          div.chat-header_respons2 {
+            padding: 0px !important;
+            margin-top: 0px; 
+            min-width: 100%;
+          }
+          figure.responsive_avatar {
+            min-width:44px;
+          }
+          div.class_session_id {
+            min-width: 48%;
+            max-width: 48%;
+            margin-top: 5%;
+          }
+          div.class_session_id2 {
+            min-width: 48%;
+            min-width: 48%;
+            margin-top: 5%;
+          }
+          ul.action_responsive{
+            min-width: 40%;
+            margin-top: 7%;
+          }
+          nav.navigation .nav-group {
+            width: auto;
+            padding: 1px 20px;
+          }
+          div.vidstream_sec {
+                padding: 30px;
+                border-radius: .75rem; 
+                background-color: #fff; 
+                min-width: 100%;
+          }
+          div.chat2-header, div.chat-header{
+            padding: 5px !important;
+          }
+
+    }
+    @media screen and (max-width: 840px) and (min-width: 740px) {
+
+        video#js-video-partner {
+            max-width: 100%;
+          }
+
+        div.vid_media {
+            max-width: 100%;
+            padding-right: 0px; 
+            margin-top: 8%;
+          }
+        div.chat-header_respons {
+            padding: 0px !important;
+            margin-top: 0px; 
+            min-width: 100%;
+            margin-top: 0px;
+          }
+        div.chat-header_respons2 {
+            padding: 0px !important;
+            margin-top: 0px; 
+            min-width: 100%;
+          }
+        figure.responsive_avatar {
+            min-width:44px;
+            }
+        div.class_session_id {
+            min-width: 75%;
+            max-width: 75%;
+            margin-top: 2%;
+            }
+        div.class_session_id2 {
+            min-width: 75%;
+            min-width: 75%;
+            margin-top: 2%;
+            } 
+        ul.action_responsive {
+            min-width: 40%;
+            margin-top: 2%;
+          }
+        nav.navigation .nav-group {
+            width: auto;
+            padding: 1px 20px;
+        }
+        div.vidstream_sec {
+            padding: 20px;
+            border-radius: .75rem; 
+            background-color: #fff; 
+            min-width: 100%;
+        }
+        div.chat2-header, div.chat-header{
+            padding: 5px !important;
+          }
+
+    }
+     
+
+    </style>
+
+</head>
+<body>
+
+<!-- preloader -->
+<div class="preloader">
+    <img src="dist/media/img/logo-2x.png" alt="logo">
+    <p class="lead font-weight-bold text-muted my-5">Loading Q-learning Video Streaming ...</p>
+    <div class="spinner-border" role="status">
+        <span class="sr-only">Loading...</span>
+    </div>
+</div>
+<!-- ./ preloader -->
+
+<!-- layout -->
+<div class="layout">
+
+    <!-- navigation -->
+    <nav class="navigation">
+        <div class="nav-group">
+            <ul>
+                <li class="logo">
+                    <a href="#">
+                        <img src="dist/media/img/logo.png" alt="logo">
+                    </a>
+                </li>
+                <!-- <li class="navigation-action-button dropright" title="New" data-placement="right">
+                    <a href="#" data-intro-js="" data-toggle="dropdown">
+                        <i class="mdi mdi-plus"></i>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right">
+                        <a href="#" class="dropdown-item" data-left-sidebar="friends">Start Chat</a>
+                        <a href="#" class="dropdown-item" data-toggle="modal" data-target="#newGroup">Add Group</a>
+                        <a href="#" class="dropdown-item" data-toggle="modal" data-target="#intiveUsers">Invite users</a>
+                    </div>
+                </li> -->
+                <li>
+                    <a class="active" data-intro-js="1" data-left-sidebar="class_vid_stream" href="#" data-toggle="tooltip" title="Class Video Stream" data-placement="right" id="chat_messages_hide">
+                        <!-- <span class="badge badge-warning"></span> -->
+                        <!-- <i data-feather="message-circle"></i> -->
+                        <i data-feather="book-open"></i>
+                    </a>
+                </li>
+                <li>
+                    <a data-intro-js="2" data-left-sidebar="chats" href="#" data-toggle="tooltip"
+                       title="Chats" data-placement="right" id="chat_messages_show">
+                        <span class="badge badge-warning"></span>
+                        <!-- <i data-feather="message-circle"></i> -->
+                        <i data-feather="user"></i>
+                    </a>
+                </li>
+                
+               <!--  <li class="brackets">
+                    <a id="show_report_nav" data-left-sidebar="Class_Report" href="#" data-toggle="tooltip"
+                       title="Class Report" data-placement="right" data-intro-js="5">
+                        <i data-feather="pie-chart"></i>
+                    </a>
+                </li> -->
+                <!-- <li class="d-none d-lg-block" data-toggle="tooltip" title="Settings" data-placement="right">
+                    <a href="#" data-toggle="modal" data-right-sidebar="settings">
+                        <i data-feather="settings"></i>
+                    </a>
+                </li> -->
+                <li data-toggle="tooltip" title="User menu" data-placement="right">
+                    <a href="login.html" data-intro-js="2" data-toggle="dropdown">
+                        <figure class="avatar avatar-sm">
+                            <img src="dist/media/img/avatar9.jpg" class="rounded-circle" alt="image">
+                        </figure>
+                    </a>
+                    <div class="dropdown-menu">
+                        <a href="#" class="dropdown-item d-none d-md-block example-app-tour-start">Start Tour</a>
+                        <div class="dropdown-divider"></div>
+                        <a href="#" class="dropdown-item text-danger">Log Out</a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <!-- ./ navigation -->
+
+    <!-- Chat left sidebar -->
+    <div id="chats" class="left-sidebar">
+        <div class="left-sidebar-content">
+            <h5 class="mb-4"> Active Students.</h5>
+            <div class="input-group">
+                    <div class="input-group-prepend">
+                        <button class="btn" type="button">
+                            <i class="ti-search"></i>
+                        </button>
+                    </div>
+                    <input type="text" class="form-control" placeholder="Search Students">
+            </div>
+            <br>
+            <ul class="list-group list-group-flush list-group list-group-flush" id="List_of_Class_Participants">
+
+                <li data-intro-js="4" class="list-group-item active">
+                    <div>
+                        <figure class="avatar mr-3">
+                            <span class="avatar-title bg-secondary rounded-circle">T</span>
+                        </figure>
+                    </div>
+                    <div class="users-list-body">
+                        <div>
+                            <h5>Student Registration Number</h5>
+                            <p>Message from Student.</p>
+                        </div>
+                        <div class="users-list-action">
+                            <small class="text-muted">Time</small>
+                            <div class="action-toggle">
+                                <div class="dropdown">
+                                    <a data-toggle="dropdown" href="#">
+                                        <i class="mdi mdi-dots-horizontal"></i>
+                                    </a>
+                                    <div class="dropdown-menu dropdown-menu-right">
+                                        <a href="#" class="dropdown-item">Open Chat</a>
+                                        <div class="dropdown-divider"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+
+            </ul>
+        </div>
+    </div>
+    <!-- ./ Chat left sidebar -->
+
+    <!-- chat -->
+    <div class="chat" id="chat_messages" style="padding-right: 0px;max-width: 100%; margin-top: 10px; margin-right: 10px" >
+        <div class="chat-preloader d-none">
+            <div class="spinner-border" role="status">
+                <span class="sr-only">Loading...</span>
+            </div>
+        </div>
+        <div class="no-message-container">
+            <div class="row mb-5">
+                <div class="col-md-4 offset-4">
+                     <span class="avatar-title bg-secondary rounded-circle"></span>
+                </div>
+            </div>
+            <p class="lead">Choose a chat.<a href="#" data-left-sidebar="friends"></a>.</p>
+        </div>
+
+        <div class="chat-header chat-header_respons2">
+            <div class="chat-header-user col-xs-12 col-sm-12 col-md-12">
+                <figure class="avatar avatar-state-success responsive_avatar">
+                    <span class="avatar-title bg-secondary rounded-circle">C</span>
+                </figure>
+                <div  class="class_session_id2">
+                    <h5>Student Registration Number</h5>
+                    <small class="text-success">Online</small>
+                </div>
+
+                <ul class="list-inline float-right action_responsive">
+                    <li class="list-inline-item" data-toggle="tooltip" title="Notifications">
+                        <a href="#" class="btn btn-info btn-floating dropdown-item text-danger example-delete-chat">
+                        <i class="mdi mdi-bell-outline"></i>   
+                        </a>
+                    </li>
+                    <li class="list-inline-item">
+                        <a href="#" class="btn btn-danger btn-floating example-chat-close">
+                            <i class="mdi mdi-arrow-left"></i>
+                        </a>
+                    </li>
+                </ul>
+
+            </div>
+        </div>
+
+        <!-- <br>
+        <h4 class="mb-4"> Messages.</h4> -->
+        <div class="chat-body chat_message_body">
+            <div class="messages">
+                <div class="message-item in">
+                    <div class="message-avatar">
+                        <figure class="avatar avatar-sm">
+                            <span class="avatar-title bg-secondary rounded-circle">S</span>
+                        </figure>
+                        <div>
+                            <h5>Student Registration Number</h5>
+                            <div class="time"> Time. </div>
+                        </div>
+                    </div>
+                    <div class="message-content">
+                        <div class="message-text">Message From System User. </div>
+                        <div class="dropdown">
+                            <a href="#" data-toggle="dropdown">
+                                <i class="mdi mdi-dots-horizontal"></i>
+                            </a>
+                            <div class="dropdown-menu">
+                                <a href="#" class="dropdown-item">Copy</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="message-item in">
+                    <div class="message-content">
+                        <div class="message-text">Message From System User.</div>
+                        <div class="dropdown">
+                            <a href="#" data-toggle="dropdown">
+                                <i class="mdi mdi-dots-horizontal"></i>
+                            </a>
+                            <div class="dropdown-menu">
+                                <a href="#" class="dropdown-item">Copy</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="message-item out">
+                    <div class="message-avatar">
+                        <figure class="avatar avatar-sm">
+                            <span class="avatar-title bg-secondary rounded-circle">T</span>
+                        </figure>
+                        <div>
+                            <h5>Student Registration Number.</h5>
+                            <div class="time"> Time. <i class="mdi mdi-check-all text-info ml-1"></i></div>
+                        </div>
+                    </div>
+                    <div class="message-content">
+                        <div class="message-text">
+                            Message From System User.
+                            <br>
+                            <br>
+                            Message From System User.
+                        </div>
+                        <div class="dropdown">
+                            <a href="#" data-toggle="dropdown">
+                                <i class="mdi mdi-dots-horizontal"></i>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right">
+                                <a href="#" class="dropdown-item">Copy</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="message-item in">
+                    <div class="message-avatar">
+                        <figure class="avatar avatar-sm">
+                            <span class="avatar-title bg-secondary rounded-circle">S</span>
+                        </figure>
+                        <div>
+                            <h5>Student Registration Number.</h5>
+                            <div class="time"> Time. </div>
+                        </div>
+                    </div>
+                    <div class="message-content">
+                        Message From System User.
+                        <div class="dropdown">
+                            <a href="#" data-toggle="dropdown">
+                                <i class="mdi mdi-dots-horizontal"></i>
+                            </a>
+                            <div class="dropdown-menu">
+                                <a href="#" class="dropdown-item">Copy</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="message-item messages-divider sticky-top" data-label="Class Session"></div>
+
+                <!-- <div class="message-item in in-typing">
+                    <div class="message-content">
+                        <div class="message-text">
+                            <div class="writing-animation">
+                                <div class="writing-animation-line"></div>
+                                <div class="writing-animation-line"></div>
+                                <div class="writing-animation-line"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div> -->
+
+            </div>
+        </div>
+        <div class="chat-footer" data-intro-js="">
+            <form class="d-flex">
+                <div class="dropdown">
+                    <button class="btn btn-light-info btn-floating mr-3" data-toggle="dropdown" title="Emoji"
+                            type="button">
+                        <i class="mdi mdi-face"></i>
+                    </button>
+                    <div class="dropdown-menu dropdown-menu-big p-0">
+                        <div class="dropdown-menu-search">
+                            <input type="text" class="form-control" placeholder="Search emoji">
+                        </div>
+                        <div class="emojis chat-emojis">
+                            <ul>
+                                <li>😁</li>
+                                <li>😂</li>
+                                <li>😃</li>
+                                <li>😄</li>
+                                <li>😅</li>
+                                <li>😆</li>
+                                <li>😉</li>
+                                <li>😊</li>
+                                <li>😋</li>
+                                <li>😌</li>
+                                <li>😍</li>
+                                <li>😏</li>
+                                <li>😒</li>
+                                <li>😓</li>
+                                <li>😔</li>
+                                <li>😖</li>
+                                <li>😘</li>
+                                <li>😝</li>
+                                <li>😠</li>
+                                <li>😢</li>
+                                <li>🙅</li>
+                                <li>🙆</li>
+                                <li>🙇</li>
+                                <li>🙈</li>
+                                <li>🙉</li>
+                                <li>🙊</li>
+                                <li>🙋</li>
+                                <li>🙌</li>
+                                <li>🙍</li>
+                                <li>🙎</li>
+                                <li>🙏</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <!-- <div class="dropdown">
+                    <button class="btn btn-light-info btn-floating mr-3" data-toggle="dropdown" title="Emoji" type="button">
+                        <i class="mdi mdi-plus"></i>
+                    </button>
+                    <div class="dropdown-menu">
+                        <a href="#" class="dropdown-item">Location</a>
+                        <a href="#" class="dropdown-item">Attach</a>
+                        <a href="#" class="dropdown-item">Document</a>
+                        <a href="#" class="dropdown-item">File</a>
+                        <a href="#" class="dropdown-item">Video</a>
+                    </div>
+                </div> -->
+                <input type="text" class="form-control form-control-main" placeholder="Write a message.">
+                <div>
+                    <button class="btn btn-primary ml-2 btn-floating" type="submit">
+                        <i class="mdi mdi-send"></i>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!-- ./ chat -->
+
+    <!-- video stream view -->
+    <div class="left-sidebar-header" style="padding-right: 0px; max-width: 100%; margin-left: 10px; margin-right: 10px;">
+        <div class="chat vid_media open left-sidebar" id="class_vid_stream" style="padding-right: 0px; max-width: 100%; margin-left: 10px; margin-right: 10px; ">
+
+            <div class="chat-header chat-header_respons">
+                <div class="chat-header-user col-xs-12 col-sm-12 col-md-12">
+                    <figure class="avatar avatar-state-success responsive_avatar">
+                        <span class="avatar-title bg-secondary rounded-circle">C</span>
+                    </figure>
+                    <div class="class_session_id">
+                        <h5 id="class_session_id">Class Title.</h5>
+                        <small class="text-success">Online</small>
+                    </div>
+
+                    <ul class="list-inline float-right action_responsive" >
+                        <li class="list-inline-item" data-toggle="tooltip" title="Notifications">
+                            <a href="#" class="btn btn-info btn-floating" data-right-sidebar="notifications">
+                                <i class="mdi mdi-bell-outline"></i>
+                            </a>
+                        </li>
+                        <li class="list-inline-item">
+                            <a href="#" class="btn btn-dark btn-floating" data-toggle="dropdown">
+                                <i class="mdi mdi-dots-horizontal"></i>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right">
+                                <div class="dropdown-divider"></div>
+                                <a href="#" class="dropdown-item text-danger">Log Out.</a>
+                            </div>
+                        </li>
+                    </ul>
+
+                </div>
+            </div>
+
+            <!-- guide text -->
+            <div class="chat2-body vidstream_sec" data-intro-js="6" >
+            <!-- guide text -->
+
+            <div class="container">
+            <div class="row">
+
+                <div class="col-md-12" class="form-control" style="margin-bottom: 2%; margin-top: 0%">  
+                  <button id="js-connect" class="form-control btn btn-success btn-floating btn-lg btn-pulse" data-toggle="tooltip" data-placement="top" title="" data-intro-js="7" data-original-title="Join Class"><i class="mdi mdi-video-outline"></i>
+                          </button>
+                  <button id="leave_class" class="form-control btn btn-danger btn-floating btn-lg float-right" data-toggle="tooltip" data-placement="top" title="" data-intro-js="8" disabled="disabled" data-original-title="Leave Class"><i class="mdi mdi-close"></i>
+                            </button>
+                </div>
+
+                <div class="col-md-12" >
+                  <label class="form-control"> Student Name :<span id="student_name"> </span> </label>
+                  <label class="form-control"> Student ID :<span id="student_reg"> </span> </label>
+
+                  <input type='text' id='js-partner-id' placeholder='Class Address' disabled="disabled" class="form-control" style="margin-bottom: 1%;">
+
+                  <input type='text' id='js-myself-id' placeholder='Input your ID' hidden>
+                  <span id='js-peer-id' hidden></span>
+                  <button id='js-open' hidden>Register</button>
+
+                  <div class="form-control">
+                    <h5><div class="call-time chat-stopwatch"> 00:00:00</div> </h5>
+                  </div>
+                </div>
+
+            </div>
+
+            <div class="row">
+                <div class="col-md-9 col-xs-12 col-sm-12" style="margin-top: 3%;">
+                  <video id='js-video-partner' class="video_canvas" controls="controls" data-intro-js="9"></video>
+                </div>
+                <div class="col-md-3 col-xs-12 col-sm-12" style="margin-top: 3%;">
+                  <video id='js-video-myself' class="video_canvas" style="max-width: 100%; max-height: 100%" data-intro-js="10"></video>
+                </div>
+            </div>
+            </div>
+
+            </div>
+
+        </div>
+    </div>
+    <!-- video stream view -->    
+
+    <!-- report -->
+    <div class="left-sidebar-header" style="padding-right: 0px; max-width: 100%; margin-left: 10px; margin-right: 10px;">
+        <div class="chat vid_media left-sidebar" id="Class_Report" style="padding-right: 0px; max-width: 100%;
+        min-width: 100%; margin-left: 10px; margin-right: 10px;">
+
+            <div class="chat-header chat-header_respons rep_head">
+                <div class="chat-header-user col-xs-12 col-sm-12 col-md-12">
+                    <figure class="avatar avatar-state-success responsive_avatar">
+                        <span class="avatar-title bg-secondary rounded-circle">C</span>
+                    </figure>
+                    <div class="class_session_id">
+                        <h5>Class Report.</h5>
+                        <small class="text-success"></small>
+                    </div>
+
+                    <ul class="list-inline float-right action_responsive">
+                        <li class="list-inline-item" data-toggle="tooltip" title="Notifications">
+                            <a href="#" class="btn btn-info btn-floating" data-right-sidebar="notifications">
+                                <i class="mdi mdi-bell-outline"></i>
+                            </a>
+                        </li>
+                        <li class="list-inline-item">
+                            <a href="#" class="btn btn-dark btn-floating" data-toggle="dropdown">
+                                <i class="mdi mdi-dots-horizontal"></i>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right">
+                                <div class="dropdown-divider"></div>
+                                <a href="#" class="dropdown-item text-danger">Log Out.</a>
+                            </div>
+                        </li>
+                    </ul>
+
+                </div>
+            </div>
+
+            <!-- guide text -->
+            <div class="chat2-body vidstream_sec rep_body">
+            <!-- guide text -->
+
+            </div>
+
+        </div>
+    </div>
+    <!-- ./ report -->
+
+</div>
+<!-- ./ layout -->
+
+<!-- Notifications -->
+<div class="right-sidebar" id="notifications">
+    <div class="right-sidebar-header">
+        <span class="right-sidebar-title"> No Notifications</span>
+        <!-- <a data-right-sidebar="settings" title="Settings" href="#">
+            <i class="mdi mdi-cog"></i>
+        </a> -->
+        <a href="#" class="right-sidebar-close">
+            <i class="mdi mdi-close"></i>
+        </a>
+    </div>
+    <div class="right-sidebar-content">
+        <ul class="list-group list-group-flush">
+            <!-- <li class="list-group-item py-3 px-0 d-flex justify-content-between">
+                <div class="d-flex">
+                    <figure class="avatar avatar-state-warning mr-3">
+                        <span class="avatar-title bg-info-bright text-info rounded-circle">
+                            <i class="mdi mdi-server"></i>
+                        </span>
+                    </figure>
+                    <div>
+                        <div>Notification Title </div>
+                        <span class="text-muted small">
+                            <i class="mdi mdi-clock-outline small mr-1"></i> Today
+                        </span>
+                    </div>
+                </div>
+                <div class="dropdown">
+                    <a href="#" data-toggle="dropdown">
+                        <i class="mdi mdi-dots-horizontal"></i>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right">
+                        <a href="#" class="dropdown-item">Unread</a>
+                        <a href="#" class="dropdown-item">Detail</a>
+                        <a href="#" class="dropdown-item">Delete</a>
+                    </div>
+                </div>
+            </li> -->
+        </ul>
+    </div>
+</div>
+<!-- ./ Notifications -->
+
+<!-- Bundle scripts -->
+<script src="dist/vendor/bundle.js"></script>
+
+<!-- Feather icons -->
+<script src="dist/icons/feather/feather.min.js"></script>
+
+<!-- Slick -->
+<script src="dist/vendor/slick/slick.min.js"></script>
+
+<!-- Fancybox -->
+<script src="dist/vendor/fancybox/jquery.fancybox.min.js"></script>
+
+<!-- Intro js -->
+<script src="dist/vendor/introjs/intro.js"></script>
+
+<!-- Jquery Stopwatch -->
+<!-- <script src="dist/vendor/jquery.stopwatch.js"></script> -->
+
+<!-- Sweetalert2 -->
+<!-- <script src="dist/vendor/sweetalert2.js"></script> -->
+
+<!-- App scripts -->
+<script src="dist/js/app.min.js"></script>
+
+<!-- Examples -->
+<script src="dist/js/examples_student.min.js"></script>
+
+<!-- Theme customizer scripts -->
+<!-- <script src="dist/js/theme-customizer.min.js"></script> -->
+
+
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+
+<!-- <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/peerjs@1.3.1/dist/peerjs.min.js"></script> -->
+
+<!-- local dependancies -->
+<script src="localjs/jquery-3.5.1.slim.min.js"></script>
+<script src="localjs/popper.min.js"></script>
+<script src="localjs/bootstrap.min.js"></script>
+<script src="localjs/peerjs.min.js"></script>
+<!-- local dependancies -->
+
+
+<!-- Jquery Stopwatch -->
+<script src="jquery.stopwatch.js"></script>
+<!-- Sweetalert2 -->
+<script src="sweetalert2.js"></script>
+
+<!-- include the peerjs objects JS file -->
+<script src="student.js"></script>
+
+<script type="text/javascript">
+
+    //set the styles
+
+    document.querySelector('#chat_messages').style.display = 'none';
+    document.querySelector('#Class_Report').style.display = 'none';
+    document.querySelector('#class_vid_stream').style.display = 'contents';
+
+    document.querySelector('#chat_messages_hide').onclick = function() {
+    document.querySelector('#chat_messages').style.display = 'none';
+    document.querySelector('#class_vid_stream').style.display = 'contents';
+    document.querySelector('#Class_Report').style.display = 'none';
+    };
+
+    document.querySelector('#chat_messages_show').onclick = function() {
+    document.querySelector('#chat_messages').style.display = 'flex';
+    document.querySelector('#class_vid_stream').style.display = 'none';
+    document.querySelector('#Class_Report').style.display = 'none';
+    };
+
+    // responsive class adjust
+    if (window.innerWidth >= 1100  && window.innerWidth > 840 ) {
+        document.querySelector('.action_responsive').style.maxWidth =  '40%';
+    }
+    if (window.innerWidth <= 840 && window.innerWidth >= 420 ) {
+        document.querySelector('.action_responsive').style.maxWidth =  '40%';
+    }
+    if ( window.innerWidth >= 360  && window.innerWidth <= 420 ) {
+        document.querySelector('.action_responsive').style.maxWidth =  '40%';
+    }
+
+</script>
+
+</body>
+</html>
+
+

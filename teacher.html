@@ -1,0 +1,1359 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title> Q-learning Video Streaming </title>
+
+    <!-- Favicon -->
+    <link rel="icon" href="dist/media/img/favicon.png" type="image/png">
+
+    <!-- Google Nunito font -->
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@200;300;400;600;700&amp;display=swap" rel="stylesheet">
+
+    <!-- Themify icons -->
+    <link href="dist/icons/themify/themify-icons.css" rel="stylesheet">
+
+    <!-- Material design icons -->
+    <link href="dist/icons/materialicons/css/materialdesignicons.min.css" rel="stylesheet">
+
+    <!-- Bundle styles -->
+    <link rel="stylesheet" href="dist/vendor/bundle.css">
+
+    <!-- Slick -->
+    <link rel="stylesheet" href="dist/vendor/slick/slick-theme.css">
+    <link rel="stylesheet" href="dist/vendor/slick/slick.css">
+
+    <!-- Fancybox -->
+    <link rel="stylesheet" href="dist/vendor/fancybox/jquery.fancybox.min.css" type="text/css"/>
+
+    <!-- Intro js -->
+    <link rel="stylesheet" href="dist/vendor/introjs/introjs.css" type="text/css"/>
+
+    <!-- App styles -->
+    <link rel="stylesheet" href="dist/css/app.min.css">
+    <link rel="stylesheet" href="dist/css/app.min2.css">
+
+    <!-- from initial teacher.html -->
+      <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous"> -->
+
+      <script src="Mixer/MultiStreamsMixer.js"></script>
+      <script src="Mixer/adapter-latest.js"></script>
+      <script src="Mixer/RecordRTC.js"></script>
+      <script src="Mixer/FileSelector.js"></script>
+
+      <!-- script used for audio/video/gif recording -->
+      <!--<script src="https://www.webrtc-experiment.com/DetectRTC.js"></script>
+      <script src="https://www.webrtc-experiment.com/gif-recorder.js"></script>
+      <script src="https://www.webrtc-experiment.com/getMediaElement.js"></script>
+      <script src="https://webrtc.github.io/adapter/adapter-latest.js"></script> -->
+      <script src="record_video_dep/DetectRTC.js"></script>
+      <script src="record_video_dep/gif-recorder.js"></script>
+      <script src="record_video_dep/getMediaElement.js"></script>
+      <script src="record_video_dep/adapter-latest.js"></script>
+
+      <!-- White/blackboard canvas -->
+      <link rel="stylesheet" href="drawingboard/example/prism.css">
+
+      <!-- in a production environment, you can include the minified css. It contains the css of the board and the default controls (size, nav, colors): -->
+      <link rel="stylesheet" href="drawingboard/dist/drawingboard.min.css">
+      <link rel="stylesheet" href="drawingboard/css/drawingboard.css">
+
+      <style>
+        /*
+        * drawingboards styles: set the board dimensions you want with CSS
+        */
+          .board {
+            margin: 0 auto;
+            width: 100%;
+            height: 100%;
+          }
+          #loading {
+            background: url('Preload.svg') no-repeat center center;
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 100%;
+            z-index: 9999999;
+          }
+
+          @media screen and (min-width: 1100px) {
+              #Black_Board_Canvas {
+                width: 1200px;
+                height: 525px;
+              }
+              #Black_Board_Canvas canvas {
+                transform: scale(0.95);
+              }
+              #title-board {
+                width: 600px;
+                height: 270px;
+              }
+              #title-board .drawing-board-canvas-wrapper {
+                border: none;
+                margin: 0;
+              }
+              #transparent-board {
+                width: 600px;
+                height: 270px;
+              }
+              #transparent-board .drawing-board-canvas-wrapper {
+                border: 1px solid gray;
+              }
+          }
+          @media screen and (max-width: 414px) {
+             #Black_Board_Canvas {
+                width: 330px;
+                height: 145px;
+              }
+              #Black_Board_Canvas canvas {
+                transform: scale(0.95);
+              }
+              #title-board {
+                width: 330px;
+                height: 148.5px;
+              }
+              #title-board .drawing-board-canvas-wrapper {
+                border: none;
+                margin: 0;
+              }
+              .drawing-board-canvas-wrapper {
+                margin-left: -5%;
+              }
+              #transparent-board {
+                width: 330px;
+                height: 148.5px;
+              }
+              #transparent-board .drawing-board-canvas-wrapper {
+                border: 1px solid gray;
+              }
+          }
+          @media screen and (max-width: 840px) and (min-width: 736px) {
+             #Black_Board_Canvas {
+                width: 740px;
+                height: 325px;
+              }
+              #Black_Board_Canvas canvas {
+                transform: scale(0.95);
+              }
+              #title-board {
+                width: 740px;
+                height: 333px;
+              }
+              #title-board .drawing-board-canvas-wrapper {
+                border: none;
+                margin: 0;
+              }
+              .drawing-board-canvas-wrapper {
+                margin-left: -2.3%;
+              }
+              #transparent-board {
+                width: 740px;
+                height: 333px;
+              }
+              #transparent-board .drawing-board-canvas-wrapper {
+                border: 1px solid gray;
+              }
+          }
+            
+          .modal-dialog {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0 !important;
+            max-width: 100%;
+          }
+          .modal-content {
+            height: auto;
+            min-height: 100%;
+            border: 0 none;
+            border-radius: 0;
+            box-shadow: none;
+          }
+          .modal-dialog_record {
+            width: 21%;
+            height: 10%;
+            margin-left: 45%;
+            margin-top: 10%;
+            max-width: 21%;
+          }
+          #js-video-myself{
+            border-top-left-radius: .75rem;
+            border-top-right-radius: .75rem;
+            /*background-color: #3B5998;*/
+            margin-bottom: 0px;
+            margin-top: 3%;
+            border-bottom-left-radius: .75rem;
+            border-bottom-right-radius: .75rem;
+            padding: 5px;
+          }
+      
+      </style>
+    <!-- from initial teacher.html -->
+    
+    <style>
+     
+    @media screen and (min-width: 1100px) {
+          video#js-video-myself{
+            max-width: 36rem;
+          }
+          div.vid_media {
+            padding-right: 0px; 
+            margin-top: 10px;
+            padding-right:0px;min-width:100%;margin-top:10px; 
+          }
+          div.chat-header_respons{
+            padding: 0px !important;
+            margin-top: 0px; 
+            min-width: 110%;
+          }
+          div.chat-header_respons2 {
+            padding: 0px !important;
+            margin-top: 0px; 
+            min-width: 100%;
+          }
+          figure.responsive_avatar {
+            min-width:44px;
+            }
+          div.class_session_id {
+                min-width: 80%;
+            }
+          div.class_session_id2 {
+                min-width: 83%;
+            }
+          ul.action_responsive{
+            min-width: 10%;
+            margin-top: 1%;
+          }
+          div.vidstream_sec {
+            padding: 30px;
+            border-radius: .75rem; 
+            background-color: #fff; 
+            min-width: 110%;
+            }
+    }
+    @media screen and (max-width: 414px) {
+          video#js-video-myself{
+            max-width:  -moz-available;
+            max-height: 20rem;
+            margin-bottom: 10px;
+             margin-left: 25%;
+          }
+          div.experiment {
+            margin-left: 15%;
+          }
+          div.experiment > div{
+            max-width: 25%;
+          }
+          div#broadcasts{
+            margin-right: 0px;
+          }
+          div.modal-dialog_record > div.modal-content{
+            width: 200%;
+          }
+          div.vid_media {
+            max-width: 100%;
+            padding-right: 0px; 
+            margin-top: 18%;
+          }
+          div.chat-header_respons{
+            padding: 0px !important;
+            margin-top: 0px; 
+            min-width: 100%;
+            margin-top: 0px;
+          }
+          div.chat-header_respons2 {
+            padding: 0px !important;
+            margin-top: 0px; 
+            min-width: 100%;
+          }
+          figure.responsive_avatar {
+            min-width:44px;
+            }
+          div.class_session_id {
+            min-width: 48%;
+            max-width: 48%;
+            margin-top: 5%;
+            }
+          div.class_session_id2 {
+            min-width: 48%;
+            min-width: 48%;
+            margin-top: 5%;
+            }
+          ul.action_responsive{
+            min-width: 40%;
+            margin-top: -14%;
+            margin-left: 70%;
+          }
+          nav.navigation .nav-group {
+            width: auto;
+            padding: 1px 20px;
+          }
+          div.vidstream_sec {
+            padding: 30px;
+            border-radius: .75rem; 
+            background-color: #fff; 
+            min-width: 100%;
+            }
+          div.chat2-header, div.chat-header{
+            padding: 5px !important;
+          }
+          canvas.drawing-board-canvas div.drawing-board-canvas-wrapper{
+            width: 59%;
+          }
+
+    }
+    @media screen and (max-width: 840px) and (min-width: 736px) {
+        video#js-video-myself{
+            max-width:  -moz-available;
+            max-height: 20rem;
+            margin-bottom: 10px;
+            margin-left: 25%;
+          }
+        div.vid_media {
+            max-width: 100%;
+            padding-right: 0px; 
+            margin-top: 8%;
+          }
+        div.chat-header_respons {
+            padding: 0px !important;
+            margin-top: 0px; 
+            min-width: 100%;
+            margin-top: 0px;
+          }
+        div.chat-header_respons2 {
+            padding: 0px !important;
+            margin-top: 0px; 
+            min-width: 100%;
+          }
+        figure.responsive_avatar {
+            min-width:44px;
+            }
+        div.class_session_id {
+            min-width: 75%;
+            max-width: 75%;
+            margin-top: 2%;
+            }
+        div.class_session_id2 {
+            min-width: 75%;
+            min-width: 75%;
+            margin-top: 2%;
+            } 
+        ul.action_responsive {
+            min-width: 40%;
+            margin-top: -7%;
+            margin-left: 80%;
+          }
+        nav.navigation .nav-group {
+            width: auto;
+            padding: 1px 20px;
+          }
+        div.vidstream_sec {
+            padding: 20px;
+            border-radius: .75rem; 
+            background-color: #fff; 
+            min-width: 100%;
+          }
+        div.chat2-header, div.chat-header{
+            padding: 10px !important;
+          }
+
+    }
+
+    </style>
+
+</head>
+<body>
+
+<!-- preloader -->
+<div class="preloader">
+    <img src="dist/media/img/logo-2x.png" alt="logo">
+    <p class="lead font-weight-bold text-muted my-5">Loading Q-learning Video Streaming ...</p>
+    <div class="spinner-border" role="status">
+        <span class="sr-only">Loading...</span>
+    </div>
+</div>
+<!-- ./ preloader -->
+
+<!-- layout -->
+<div class="layout">
+
+    <!-- navigation -->
+    <nav class="navigation">
+        <div class="nav-group">
+            <ul>
+                <li class="logo">
+                    <a href="#">
+                        <img src="dist/media/img/logo.png" alt="logo">
+                    </a>
+                </li>
+                <!-- <li class="navigation-action-button dropright" title="New" data-placement="right">
+                    <a href="#" data-intro-js="1" data-toggle="dropdown">
+                        <i class="mdi mdi-plus"></i>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right">
+                        <a href="#" class="dropdown-item" data-left-sidebar="friends">Start Chat</a>
+                        <a href="#" class="dropdown-item" data-toggle="modal" data-target="#newGroup">Add Group</a>
+                        <a href="#" class="dropdown-item" data-toggle="modal" data-target="#intiveUsers">Invite users</a>
+                    </div>
+                </li> -->
+                <li id="hide_responsive_list">
+                    <a class="active" data-intro-js="1" data-left-sidebar="chats0" href="#" data-toggle="tooltip"
+                       title="Chats And Class Video Stream" data-placement="right" id="chat_vid_show">
+                        <!-- <i data-feather="message-circle"></i> -->
+                        <i data-feather="plus-square"></i>
+                    </a>
+                </li>
+
+                 <li>
+                    <a data-intro-js="1" data-left-sidebar="class_vid_stream" href="#" data-toggle="tooltip" title="Class Video Stream" data-placement="right" id="chat_messages_hide">
+                        <i data-feather="book-open"></i>
+                    </a>
+                </li>
+
+                <li>
+                    <a data-intro-js="2" data-left-sidebar="chats" href="#" data-toggle="tooltip" title="Chats" data-placement="right" id="chat_messages_show">
+                        <i data-feather="user"></i>
+                    </a>
+                </li>
+
+                <!-- <li class="d-none d-lg-block" data-toggle="tooltip" title="Settings" data-placement="right">
+                    <a href="#" data-toggle="modal" data-right-sidebar="settings">
+                        <i data-feather="settings"></i>
+                    </a>
+                </li> -->
+                <li data-toggle="tooltip" title="User menu" data-placement="right">
+                    <a href="login.html" data-intro-js="3" data-toggle="dropdown">
+                        <figure class="avatar avatar-sm">
+                            <img src="dist/media/img/avatar9.jpg" class="rounded-circle" alt="image">
+                        </figure>
+                    </a>
+                    <div class="dropdown-menu">
+                        <a href="#" class="dropdown-item d-none d-md-block example-app-tour-start">Start Tour</a>
+                        <div class="dropdown-divider"></div>
+                        <a href="#" class="dropdown-item text-danger">Log</a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <!-- ./ navigation -->
+
+    <!-- Chat left sidebar -->
+    <div id="chats" class="left-sidebar open">
+        <div class="left-sidebar-content">
+            <h5 class="mb-4"> Active Students.</h5>
+            <div class="input-group">
+                    <div class="input-group-prepend">
+                        <button class="btn" type="button">
+                            <i class="ti-search"></i>
+                        </button>
+                    </div>
+                    <input type="text" class="form-control" placeholder="Search Students">
+            </div>
+            <br>
+            <ul class="list-group list-group-flush" id="List_of_Class_Participants">
+                <li data-intro-js="5" class="list-group-item active">
+                    <div>
+                        <figure class="avatar mr-3">
+                            <span class="avatar-title bg-secondary rounded-circle">T</span>
+                        </figure>
+                    </div>
+                    <div class="users-list-body">
+                        <div>
+                            <h5>Student Registration.</h5>
+                            <p>Message from Student.</p>
+                        </div>
+                        <div class="users-list-action">
+                            <small class="text-muted">Time</small>
+                            <div class="action-toggle">
+                                <div class="dropdown">
+                                    <a data-toggle="dropdown" href="#">
+                                        <i class="mdi mdi-dots-horizontal"></i>
+                                    </a>
+                                    <div class="dropdown-menu dropdown-menu-right">
+                                      <div class="dropdown-item bg-success"> 
+                                          <i class="mdi mdi-video-outline"></i>
+                                      </div>
+                                      <div class="dropdown-item bg-danger" style="font-size: 11px;">End</div>
+                                      <a href="#" class="dropdown-item">Open Chat</a>
+                                      <div class="dropdown-divider"></div>
+                                      <a href="#" class="dropdown-item text-danger example-delete-chat0">Report Student</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <!-- ./ Chat left sidebar -->
+
+    <!-- Class_Report left sidebar -->
+    <div id="Class_Report" class="left-sidebar">
+        <div class="left-sidebar-header">
+            <form>
+                <h5 class="mb-4">Class Report.</h5>
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <button class="btn" type="button">
+                            <i class="ti-search"></i>
+                        </button>
+                    </div>
+                    <input type="text" class="form-control" placeholder="Search Class_Report">
+                </div>
+            </form>
+        </div>
+        <div class="left-sidebar-content">
+            <ul class="list-group list-group-flush users-list">
+                <li class="list-group-item">
+                    <figure class="avatar mr-3">
+                        <span class="avatar-title bg-danger rounded-circle">R</span>
+                    </figure>
+                    <div class="users-list-body">
+                        <div>
+                            <h5>Statistics.</h5>
+                            <p>View Session Statistics.</p>
+                        </div>
+                        <div class="users-list-action">
+                            <div class="action-toggle">
+                                <div class="dropdown">
+                                    <a data-toggle="dropdown" href="#">
+                                        <i class="mdi mdi-dots-horizontal"></i>
+                                    </a>
+                                    <div class="dropdown-menu dropdown-menu-right">
+                                        <a href="#" class="dropdown-item">Open</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                
+            </ul>
+        </div>
+    </div>
+    <!-- ./ Class_Report left sidebar -->
+
+    <!-- chat -->
+    <div class="chat" id="chat_messages"> <!-- no-message -->
+        <div class="chat-preloader d-none">
+            <div class="spinner-border" role="status">
+                <span class="sr-only">Loading...</span>
+            </div>
+        </div>
+        <div class="no-message-container">
+            <div class="row mb-5">
+                <!-- <div class="col-md-4 offset-4">
+                     <span class="avatar-title bg-secondary rounded-circle">T</span>
+                </div> -->
+            </div>
+            <p class="lead">Choose a chat.</p>
+        </div>
+        <div class="chat-header">
+            <div class="chat-header-user">
+                <figure class="avatar avatar-state-success">
+                     <span class="avatar-title bg-secondary rounded-circle">S</span>
+                </figure>
+                <div class="class_session_id">
+                    <h5>Student Registration Number</h5>
+                    <small class="text-success">Online</small>
+                </div>
+            </div>
+
+            <div class="chat-header-action">
+                <ul class="list-inline action_responsive" data-intro-js="7">
+                    <li class="list-inline-item" data-toggle="" title="Report Student">
+                        <a href="#" class="btn btn-info btn-floating dropdown-item text-danger example-delete-chat">
+                        <i class="mdi mdi-bell-outline"></i>   
+                        </a>
+                    </li>
+                    <li class="list-inline-item">
+                        <a href="#" class="btn btn-danger btn-floating example-chat-close">
+                            <i class="mdi mdi-arrow-left"></i>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+       <!--  <br>
+        <h4 class="mb-4"> Messages.</h4> -->
+        <div class="chat-body">
+            <div class="messages">
+                <div class="message-item in">
+                    <div class="message-avatar">
+                        <figure class="avatar avatar-sm">
+                            <span class="avatar-title bg-secondary rounded-circle">S</span>
+                        </figure>
+                        <div>
+                            <h5>Student Registration Number</h5>
+                            <div class="time"> Time. </div>
+                        </div>
+                    </div>
+                    <div class="message-content">
+                        <div class="message-text">Message From Student. </div>
+                        <div class="dropdown">
+                            <a href="#" data-toggle="dropdown">
+                                <i class="mdi mdi-dots-horizontal"></i>
+                            </a>
+                            <div class="dropdown-menu">
+                                <a href="#" class="dropdown-item">Copy</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="message-item in">
+                    <div class="message-content">
+                        <div class="message-text">Message From Student.</div>
+                        <div class="dropdown">
+                            <a href="#" data-toggle="dropdown">
+                                <i class="mdi mdi-dots-horizontal"></i>
+                            </a>
+                            <div class="dropdown-menu">
+                                <a href="#" class="dropdown-item">Copy</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="message-item out">
+                    <div class="message-avatar">
+                        <figure class="avatar avatar-sm">
+                            <span class="avatar-title bg-secondary rounded-circle">T</span>
+                        </figure>
+                        <div>
+                            <h5>Student Registration Number.</h5>
+                            <div class="time"> Time. <i class="mdi mdi-check-all text-info ml-1"></i></div>
+                        </div>
+                    </div>
+                    <div class="message-content">
+                        <div class="message-text">
+                            Message From Student.
+                            <br>
+                            <br>
+                            Message From Student.
+                        </div>
+                        <div class="dropdown">
+                            <a href="#" data-toggle="dropdown">
+                                <i class="mdi mdi-dots-horizontal"></i>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right">
+                                <a href="#" class="dropdown-item">Copy</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="message-item in">
+                    <div class="message-avatar">
+                        <figure class="avatar avatar-sm">
+                            <span class="avatar-title bg-secondary rounded-circle">S</span>
+                        </figure>
+                        <div>
+                            <h5>Student Registration Number.</h5>
+                            <div class="time"> Time. </div>
+                        </div>
+                    </div>
+                    <div class="message-content">
+                        Message From Student.
+                        <div class="dropdown">
+                            <a href="#" data-toggle="dropdown">
+                                <i class="mdi mdi-dots-horizontal"></i>
+                            </a>
+                            <div class="dropdown-menu">
+                                <a href="#" class="dropdown-item">Copy</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="message-item messages-divider sticky-top" data-label="Class Session"></div>
+
+                <!-- <div class="message-item in in-typing">
+                    <div class="message-content">
+                        <div class="message-text">
+                            <div class="writing-animation">
+                                <div class="writing-animation-line"></div>
+                                <div class="writing-animation-line"></div>
+                                <div class="writing-animation-line"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div> -->
+
+            </div>
+        </div>
+        <div class="chat-footer" data-intro-js="6">
+            <form class="d-flex">
+                <div class="dropdown">
+                    <button class="btn btn-light-info btn-floating mr-3" data-toggle="dropdown" title="Emoji"
+                            type="button">
+                        <i class="mdi mdi-face"></i>
+                    </button>
+                    <div class="dropdown-menu dropdown-menu-big p-0">
+                        <div class="dropdown-menu-search">
+                            <input type="text" class="form-control" placeholder="Search emoji">
+                        </div>
+                        <div class="emojis chat-emojis">
+                            <ul>
+                                <li>😁</li>
+                                <li>😂</li>
+                                <li>😃</li>
+                                <li>😄</li>
+                                <li>😅</li>
+                                <li>😆</li>
+                                <li>😉</li>
+                                <li>😊</li>
+                                <li>😋</li>
+                                <li>😌</li>
+                                <li>😍</li>
+                                <li>😏</li>
+                                <li>😒</li>
+                                <li>😓</li>
+                                <li>😔</li>
+                                <li>😖</li>
+                                <li>😘</li>
+                                <li>😝</li>
+                                <li>😠</li>
+                                <li>😢</li>
+                                <li>🙅</li>
+                                <li>🙆</li>
+                                <li>🙇</li>
+                                <li>🙈</li>
+                                <li>🙉</li>
+                                <li>🙊</li>
+                                <li>🙋</li>
+                                <li>🙌</li>
+                                <li>🙍</li>
+                                <li>🙎</li>
+                                <li>🙏</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <!-- <div class="dropdown">
+                    <button class="btn btn-light-info btn-floating mr-3" data-toggle="dropdown" title="Emoji" type="button">
+                        <i class="mdi mdi-plus"></i>
+                    </button>
+                    <div class="dropdown-menu">
+                        <a href="#" class="dropdown-item">Location</a>
+                        <a href="#" class="dropdown-item">Attach</a>
+                        <a href="#" class="dropdown-item">Document</a>
+                        <a href="#" class="dropdown-item">File</a>
+                        <a href="#" class="dropdown-item">Video</a>
+                    </div>
+                </div> -->
+                <input type="text" class="form-control form-control-main" placeholder="Write a message.">
+                <div>
+                    <button class="btn btn-primary ml-2 btn-floating" type="submit">
+                        <i class="mdi mdi-send"></i>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!-- ./ chat -->
+
+    <!-- ./ vid stream -->
+    <div class="left-sidebar-header2" style="min-width: 45% !important">
+      <div class="chat2 open left-sidebar vid_media" style="min-height: 100%;" id="class_vid_stream">
+        <!-- guide text -->
+        <div class="chat2-body" style=" padding: 0px;" data-intro-js="4">
+        <!-- guide text -->
+
+        <div class="chat2-header" style=" margin-top: 0px;">
+            <div class="chat2-header-user">
+                <figure class="avatar avatar-state-success responsive_avatar">
+                    <span class="avatar-title bg-secondary rounded-circle">S</span>
+                </figure>
+                <div class="class_session_id">
+                    <h5 id="class_session_id">Class Title.</h5>
+                    <small class="text-success">Online</small>
+                </div>
+            </div>
+                <ul class="list-inline action_responsive" data-intro-js="7">
+                    <!-- <li class="list-inline-item d-inline d-lg-none">
+                        <a href="#" class="btn btn-danger btn-floating example-chat-close">
+                            <i class="mdi mdi-arrow-left"></i>
+                        </a>
+                    </li> -->
+                    <li class="list-inline-item" data-toggle="tooltip" title="Notifications">
+                        <a href="#" class="btn btn-info btn-floating" data-right-sidebar="notifications">
+                            <i class="mdi mdi-bell-outline"></i>
+                        </a>
+                    </li>
+                    <li class="list-inline-item">
+                        <a href="#" class="btn btn-dark btn-floating" data-toggle="dropdown">
+                            <i class="mdi mdi-dots-horizontal"></i>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right">
+                            <!-- <a href="#" class="dropdown-item example-delete-chat">Delete</a> -->
+                            <div class="dropdown-divider"></div>
+                            <a href="#" class="dropdown-item text-danger">Log Out.</a>
+                        </div>
+                    </li>
+                </ul>
+        </div>
+
+        <div>
+            <div id="loading" hidden></div>
+            <div class="container" id="vid_sec_container">
+
+            <div class="row">
+            <!--div class="col-md-6">
+              <input disabled type='text' id='js-partner-id' placeholder='Input partner ID'>
+              <button disabled id='js-connect'>Connect</button>
+            </div-->
+            </div>
+
+            <div id="container">
+                <div class="experiment row" style="padding: 5px; margin-bottom: 6%;">
+                      <div class="col-xs-4 col-sm-4 col-md-4" hidden>
+                        <input type='text' id='js-myself-id' placeholder='Input your ID' disabled hidden>
+                        <span id='js-peer-id'></span>
+                      </div>
+                      <div class="col-xs-4 col-sm-4 col-md-4" style="padding-left: 0px;">
+
+                      <button id="js-open" class="btn btn-success btn-floating btn-lg btn-pulse" data-toggle="tooltip" data-placement="top" title="Start Class (Permit ScreenShare)" data-intro-js="8" ><i class="mdi mdi-video-outline"></i>
+                      </button>
+
+                      </div>
+                      <!-- <button class="btn btn-secondary" id="start-recording">Start Class ( Webcam )</button> -->
+                      <div class="col-xs-4 col-sm-4 col-md-4" style="padding-left: 0px;">
+
+                      <button id="stop-recording" class="btn btn-danger btn-floating btn-lg" data-toggle="tooltip" data-placement="top" title="Stop Class (Download Session Video)" data-intro-js="9" disabled="disabled"><i class="mdi mdi-close"></i>
+                        </button>
+
+                      </div>
+                      <div class="col-xs-4 col-sm-4 col-md-4" style="padding-left: 0px;">
+
+                      <button id="recoring_options_btn" class="btn btn-secondary btn-floating btn-lg" data-toggle="modal" data-target="#record_options_modal" data-placement="bottom" title="Recording Options (Record Session)" data-intro-js="10" disabled="disabled">
+                        <i class="mdi mdi-record" data-placement="top" data-toggle="tooltip" title="Recording Options (Record Session)"></i>
+                      </button>
+
+                      </div>
+
+                      <!-- <div class="col-md-3">
+                        <h5>List of Class Participants</h5>
+                        <ul id="List_of_Class_Participants0" alt="">
+                            <li>Student Reg No:   Student Name:</li>
+                        </ul>
+                      </div> -->
+
+                      <div class="col-md-3" style="padding-left: 0px;" hidden>
+                      <button class="btn btn-secondary" id="pause-recording" hidden disabled >Pause Class Session</button>
+                      </div>
+                      <div class="col-md-3" style="padding-left: 0px;" hidden>
+                      <button class="btn btn-secondary" id="resume-recording" hidden disabled >Resume Class Session</button>
+                      </div>
+                    
+                      <!-- <button id="add-stream" >Add Streams (Screenshare, Black/White Board, Student Stream)</button> -->
+                </div>
+            </div>
+
+            <div class="row" style="margin-bottom: 2%; margin-left: 0%;" id="broadcasts">
+
+              <div class="btn-group btn-group-toggle" data-toggle="buttons" style="margin-left: 4px;">
+                    <label class="btn btn-secondary active">
+                      <input type="radio" name="options" id="select_webcam" autocomplete="off" checked>Broadcast Webcam
+                    </label>
+                    <label class="btn btn-secondary">
+                      <input type="radio" name="options" id="select_screenshare" autocomplete="off">Broadcast SreenShare
+                    </label>
+                    <label class="btn btn-secondary">
+                      <input type="radio" name="options" id="select_blackb" autocomplete="off" data-toggle="modal" data-target="#Black_Board_Modal">Broadcast Black /White Board
+                    </label>
+              </div>
+
+              <!-- white board modal -->
+              <!-- record options -->
+            </div>
+
+            <div class="row" id="vid_displays">
+                <div class="col-md-12" id="timer_stopwht" style="max-width:96.5%">
+
+                  <h5 class="mb-4 form-control" style="margin-bottom: 2%;"> 
+                    <div class="call-time chat-stopwatch" >00:00:00</div>
+                  </h5>
+
+                  <video id='js-video-myself'></video>
+
+                </div>
+                <div class="col-md-4" hidden >
+                  <h5>ScreenShare Display</h5>
+                    <video id='js-video-myself-screen' style="max-width: 200px;" hidden></video>
+                </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-8">
+                    <div id="replace_created_canvas" style="transform: scale(0.6, 0.6); margin-top: -10%;margin-left: -29%;"></div>
+                </div>
+            </div>
+
+            </div>
+        </div>
+
+        </div>
+      </div>
+    </div>
+    <!-- ./ vid stream -->
+   
+
+</div>
+<!-- ./ layout -->
+
+<!-- Notifications -->
+<div class="right-sidebar" id="notifications">
+    <div class="right-sidebar-header">
+        <span class="right-sidebar-title"> No Notifications</span>
+        <!-- <a data-right-sidebar="settings" title="Settings" href="#">
+            <i class="mdi mdi-cog"></i>
+        </a> -->
+        <a href="#" class="right-sidebar-close">
+            <i class="mdi mdi-close"></i>
+        </a>
+    </div>
+    <div class="right-sidebar-content">
+        <ul class="list-group list-group-flush">
+            <!-- <li class="list-group-item py-3 px-0 d-flex justify-content-between">
+                <div class="d-flex">
+                    <figure class="avatar avatar-state-warning mr-3">
+                        <span class="avatar-title bg-info-bright text-info rounded-circle">
+                            <i class="mdi mdi-server"></i>
+                        </span>
+                    </figure>
+                    <div>
+                        <div>Notification Title </div>
+                        <span class="text-muted small">
+                            <i class="mdi mdi-clock-outline small mr-1"></i> Today
+                        </span>
+                    </div>
+                </div>
+                <div class="dropdown">
+                    <a href="#" data-toggle="dropdown">
+                        <i class="mdi mdi-dots-horizontal"></i>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right">
+                        <a href="#" class="dropdown-item">Unread</a>
+                        <a href="#" class="dropdown-item">Detail</a>
+                        <a href="#" class="dropdown-item">Delete</a>
+                    </div>
+                </div>
+            </li> -->
+        </ul>
+    </div>
+</div>
+<!-- ./ Notifications -->
+
+<!-- User profile -->
+<!-- ./ User profile -->
+
+<!-- Settings -->
+<!-- <div class="right-sidebar" id="settings">
+    <div class="right-sidebar-header">
+        <span class="right-sidebar-title">Settings</span>
+        <a href="#" class="right-sidebar-close">
+            <i class="mdi mdi-window-close"></i>
+        </a>
+    </div>
+    <div class="right-sidebar-content">
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item py-3 px-0">
+                <div class="form-item custom-control custom-switch">
+                    <input type="checkbox" class="custom-control-input" checked id="customSwitch14">
+                    <label class="custom-control-label" for="customSwitch14">Sound</label>
+                </div>
+            </li>
+        </ul>
+    </div>
+</div> -->
+<!-- ./ Settings -->
+
+<!-- setting modal -->
+<!-- <div class="modal fade" id="settingsModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-zoom" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    <i class="mdi mdi-cog mr-2"></i> Settings
+                </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <i class="mdi mdi-close"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <ul class="nav nav-tabs" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" data-toggle="tab" href="#account" role="tab" aria-controls="account"
+                           aria-selected="true">Account</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-toggle="tab" href="#notification" role="tab"
+                           aria-controls="notification" aria-selected="false">Notification</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-toggle="tab" href="#contact" role="tab" aria-controls="contact"
+                           aria-selected="false">Security</a>
+                    </li>
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane show active" id="account" role="tabpanel">
+                        <div class="form-item custom-control custom-switch">
+                            <input type="checkbox" class="custom-control-input" checked id="customSwitch1">
+                            <label class="custom-control-label" for="customSwitch1">Allow connected contacts</label>
+                        </div>
+                        <div class="form-item custom-control custom-switch">
+                            <input type="checkbox" class="custom-control-input" checked id="customSwitch2">
+                            <label class="custom-control-label" for="customSwitch2">Confirm message requests</label>
+                        </div>
+                        <div class="form-item custom-control custom-switch">
+                            <input type="checkbox" class="custom-control-input" checked id="customSwitch3">
+                            <label class="custom-control-label" for="customSwitch3">Profile privacy</label>
+                        </div>
+                        <div class="form-item custom-control custom-switch">
+                            <input type="checkbox" class="custom-control-input" id="customSwitch4">
+                            <label class="custom-control-label" for="customSwitch4">Developer mode options</label>
+                        </div>
+                        <div class="form-item custom-control custom-switch">
+                            <input type="checkbox" class="custom-control-input" checked id="customSwitch5">
+                            <label class="custom-control-label" for="customSwitch5">Two-step security
+                                verification</label>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="notification" role="tabpanel">
+                        <div class="form-item custom-control custom-switch">
+                            <input type="checkbox" class="custom-control-input" checked id="customSwitch6">
+                            <label class="custom-control-label" for="customSwitch6">Allow mobile notifications</label>
+                        </div>
+                        <div class="form-item custom-control custom-switch">
+                            <input type="checkbox" class="custom-control-input" id="customSwitch7">
+                            <label class="custom-control-label" for="customSwitch7">Notifications from your
+                                friends</label>
+                        </div>
+                        <div class="form-item custom-control custom-switch">
+                            <input type="checkbox" class="custom-control-input" id="customSwitch8">
+                            <label class="custom-control-label" for="customSwitch8">Send notifications by email</label>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="contact" role="tabpanel">
+                        <div class="form-item custom-control custom-switch">
+                            <input type="checkbox" class="custom-control-input" id="customSwitch9">
+                            <label class="custom-control-label" for="customSwitch9">Suggest changing passwords every
+                                month.</label>
+                        </div>
+                        <div class="form-item custom-control custom-switch">
+                            <input type="checkbox" class="custom-control-input" checked id="customSwitch10">
+                            <label class="custom-control-label" for="customSwitch10">Let me know about suspicious
+                                entries to your account</label>
+                        </div>
+                        <div class="form-item">
+                            <p>
+                                <a class="btn btn-light" data-toggle="collapse" href="#collapseExample" role="button"
+                                   aria-expanded="false"
+                                   aria-controls="collapseExample">
+                                    <i class="mdi mdi-plus mr-2"></i> Security Questions
+                                </a>
+                            </p>
+                            <div class="collapse" id="collapseExample">
+                                <div class="form-group">
+                                    <input type="text" class="form-control" placeholder="Question 1">
+                                </div>
+                                <div class="form-group">
+                                    <input type="text" class="form-control" placeholder="Answer 1">
+                                </div>
+                                <div class="form-group">
+                                    <input type="text" class="form-control" placeholder="Question 2">
+                                </div>
+                                <div class="form-group">
+                                    <input type="text" class="form-control" placeholder="Answer 2">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary">Save</button>
+            </div>
+        </div>
+    </div>
+</div> -->
+<!-- ./ setting modal -->
+
+<!-- edit profile modal -->
+<!-- ./ edit profile modal -->
+
+<!-- recording opions modal -->
+<div class="modal" tabindex="-1" role="dialog" id="record_options_modal" controls="controls">
+      <div class="modal-dialog_record" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Record Options</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+              <section class="experiment">
+                  <button class="btn btn-primary" id="start" onclick="window.start_recording()" disabled>Start</button>
+                  <button class="btn btn-danger" id="stop" onclick="window.stop_recording()" disabled>Stop</button>
+                  <button class="btn btn-info" id="get" disabled hidden>Get</button>
+                  <button class="btn btn-success" id="save" disabled>Save</button>
+                  <div id="videos-container"></div>
+                  <audio id="audio"></audio>
+              </section>
+          </div>
+        </div>
+      </div>
+    </div>
+<!-- recording opions modal -->
+
+<!-- black board canvas modal -->
+<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" id="Black_Board_Modal" controls="controls">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">White Board Drawing Canvas.</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div>
+          <div class="board" id="Black_Board_Canvas"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- black board canvas modal -->
+
+
+<!-- Bundle scripts -->
+<script src="dist/vendor/bundle.js"></script>
+
+<!-- Feather icons -->
+<script src="dist/icons/feather/feather.min.js"></script>
+
+<!-- Slick -->
+<script src="dist/vendor/slick/slick.min.js"></script>
+
+<!-- Fancybox -->
+<script src="dist/vendor/fancybox/jquery.fancybox.min.js"></script>
+
+<!-- Intro js -->
+<script src="dist/vendor/introjs/intro.js"></script>
+
+<!-- Jquery Stopwatch -->
+<!-- <script src="dist/vendor/jquery.stopwatch.js"></script> -->
+
+<!-- Sweetalert2 -->
+<!-- <script src="dist/vendor/sweetalert2.js"></script> -->
+
+<!-- App scripts -->
+<script src="dist/js/app.min.js"></script>
+
+<!-- Examples -->
+<script src="dist/js/examples.min.js"></script>
+
+<!-- Theme customizer scripts -->
+<!-- <script src="dist/js/theme-customizer.min.js"></script> -->
+
+
+
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<!-- <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/peerjs@1.3.1/dist/peerjs.min.js"></script> -->
+
+<!-- local dependancies -->
+<script src="localjs/jquery-3.5.1.slim.min.js"></script>
+<script src="localjs/popper.min.js"></script>
+<script src="localjs/bootstrap.min.js"></script>
+<script src="localjs/peerjs.min.js"></script>
+<!-- local dependancies -->
+
+<!-- Jquery Stopwatch -->
+<script src="jquery.stopwatch.js"></script>
+<!-- Sweetalert2 -->
+<script src="sweetalert2.js"></script>
+
+<!-- Whitreboard /black board canvas code -->
+<script src="drawingboard/dist/drawingboard.min.js"></script>
+<script src="drawingboard/js/utils.js"></script>
+<script src="drawingboard/js/board.js"></script>
+<script src="drawingboard/js/controls/control.js"></script>
+<script src="drawingboard/js/controls/color.js"></script>
+<script src="drawingboard/js/controls/drawingmode.js"></script>
+<script src="drawingboard/js/controls/navigation.js"></script>
+<script src="drawingboard/js/controls/size.js"></script>
+<script src="drawingboard/js/controls/download.js"></script>
+
+<script data-example="3">
+  var customBoard2 = new DrawingBoard.Board('Black_Board_Canvas', {
+    controls: [
+      'Color',
+      { Size: { type: 'dropdown' } },
+      { DrawingMode: { filler: false } },
+      'Navigation',
+      'Download'
+    ],
+    size: 1,
+    webStorage: 'session',
+    enlargeYourContainer: true,
+    droppable: true, //try dropping an image on the canvas!
+    stretchImg: true //the dropped image can be automatically ugly resized to to take the canvas size
+  });
+</script>
+
+<!-- include adapter for srcObject shim -->
+<!-- <script src="https://webrtc.github.io/adapter/adapter-latest.js"></script> -->
+
+<!-- include the peerjs objects JS file -->
+<script src="teacher.js"></script>
+
+<script src="StreamMixer.js"></script>
+
+<!-- include the recording video file -->
+<script src="record_video.js"></script>
+<!-- <script src="https://www.webrtc-experiment.com/commits.js" async></script> -->
+<script src="record_video_dep/commits.js" async></script>
+
+<script type="text/javascript">
+
+    //set the styles
+
+    // document.querySelector('#chat_messages').style.display = 'none';
+    // document.querySelector('#chat_vid_show').style.display = 'none';
+    // document.querySelector('#class_vid_stream').style.display = 'contents';
+
+    //responsive for tab and phone
+    if (window.innerWidth <= 840 && window.innerWidth >= 420 ) {
+        document.querySelector('#class_vid_stream').style.minWidth = '100%';
+        document.querySelector('#hide_responsive_list').style.display = 'none';
+        document.querySelector('#class_vid_stream').style.minWidth = '98%';
+        document.querySelector('#class_vid_stream').style.marginLeft = '1%';
+
+        document.querySelector('#vid_sec_container').style.marginLeft = '10%';
+        document.querySelector('#broadcasts').style.marginLeft = '-3%';
+        document.querySelector('#vid_displays').style.marginLeft = '-5%';
+        document.querySelector('#timer_stopwht').style.maxWidth = '80%';
+        document.querySelector('#timer_stopwht').style.marginLeft = '0%';
+
+        // the drawing canvas
+        document.querySelector('.drawing-board-canvas').style.width = '100%';
+        document.querySelector('.drawing-board-canvas-wrapper').style.width = '100%';
+
+    }
+    if ( window.innerWidth >= 360  && window.innerWidth <= 419 ) {
+        document.querySelector('#hide_responsive_list').style.display = 'none';
+        document.querySelector('#class_vid_stream').style.minWidth = '98%';
+        document.querySelector('#class_vid_stream').style.marginLeft = '1%';
+
+        document.querySelector('#vid_sec_container').style.marginLeft = '-5%';
+        document.querySelector('#broadcasts').style.marginLeft = '5%';
+        document.querySelector('#vid_displays').style.marginLeft = '-3%';
+        document.querySelector('#timer_stopwht').style.maxWidth = '100%';
+        document.querySelector('#timer_stopwht').style.marginLeft = '4%';
+
+        // the drawing canvas
+        document.querySelector('.drawing-board-canvas').style.width = '100%';
+        document.querySelector('.drawing-board-canvas-wrapper').style.width = '100%';
+    }
+
+    document.querySelector('#chat_vid_show').onclick = function() {
+    document.querySelector('#chat_messages').style.display = 'flex';
+    document.querySelector('#class_vid_stream').style.display = 'flex';
+    document.querySelector('#chat_messages_show').style.backgroundColor = '#E6E6E6';
+    this.style.backgroundColor = '#ffffff';
+    document.querySelector('#class_vid_stream').style.marginLeft = '0%';
+    document.querySelector('#vid_sec_container').style.marginLeft = '0%';
+
+    document.querySelector('#broadcasts').style.marginLeft = '0%';
+    document.querySelector('#vid_displays').style.marginLeft = '0%';
+
+    document.querySelector('#timer_stopwht').style.maxWidth = '93%';
+    document.querySelector('#chats').style.display = 'flex';
+
+    //responsive dimensions
+    if (window.innerWidth >= 1100  && window.innerWidth > 840 ) {
+        document.querySelector('#chat_messages').style.minWidth = '35%';
+        document.querySelector('#class_vid_stream').style.minWidth = '100%';
+        document.querySelector('#vid_displays').style.marginLeft = '-2%';
+        document.querySelector('.experiment').style.marginBottom = '6%';
+    }
+    if (window.innerWidth <= 840 && window.innerWidth >= 420 ) {
+    }
+    if ( window.innerWidth >= 360  && window.innerWidth <= 419 ) {
+    }
+
+    };
+
+    document.querySelector('#chat_messages_show').onclick = function() {
+    document.querySelector('#class_vid_stream').style.display = 'none';
+    document.querySelector('#chat_messages').style.maxWidth = '100%';
+    document.querySelector('#chat_messages').style.display = 'flex';
+    document.querySelector('#class_vid_stream').style.display = 'none';
+    document.querySelector('#chat_vid_show').style.backgroundColor = '#E6E6E6';
+    this.style.backgroundColor = '#ffffff';
+    document.querySelector('#chats').style.display = 'flex';
+
+    //responsive dimensions
+    if (window.innerWidth >= 1100  && window.innerWidth > 840 ) {
+        document.querySelector('#chat_messages').style.minWidth = '79%';
+    }
+    if (window.innerWidth <= 840 && window.innerWidth >= 420 ) {
+    }
+    if ( window.innerWidth >= 360  && window.innerWidth <= 419 ) {
+    }
+
+    };
+
+    document.querySelector('#chat_messages_hide').onclick = function() {
+    document.querySelector('#class_vid_stream').style.display = 'flex';
+    document.querySelector('#chat_messages').style.display = 'none';
+    document.querySelector('.experiment').style.marginBottom = '1%';
+    document.querySelector('#class_vid_stream').style.marginLeft = '1%';
+
+    document.querySelector('#chat_messages_show').style.backgroundColor = '#E6E6E6';
+    document.querySelector('#chat_vid_show').style.backgroundColor = '#E6E6E6';
+    document.querySelector('#chats').style.display = 'none';
+
+    //responsive dimensions
+    if (window.innerWidth >= 1100  && window.innerWidth > 840 ) {
+        document.querySelector('#class_vid_stream').style.minWidth = '208%';
+        document.querySelector('#vid_sec_container').style.marginLeft = '18%';
+        document.querySelector('#broadcasts').style.marginLeft = '11%';
+        document.querySelector('#vid_displays').style.marginLeft = '10%';
+        document.querySelector('#timer_stopwht').style.maxWidth = '57%';
+    }
+    if (window.innerWidth <= 840 && window.innerWidth >= 420 ) {
+        document.querySelector('#class_vid_stream').style.minWidth = '98%';
+        document.querySelector('#vid_sec_container').style.marginLeft = '10%';
+        document.querySelector('#broadcasts').style.marginLeft = '-3%';
+        document.querySelector('#vid_displays').style.marginLeft = '-5%';
+        document.querySelector('#timer_stopwht').style.maxWidth = '80%';
+        document.querySelector('#timer_stopwht').style.marginLeft = '0%';
+    }
+    if ( window.innerWidth >= 360  && window.innerWidth <= 419 ) {
+        document.querySelector('#class_vid_stream').style.minWidth = '98%';
+        document.querySelector('#vid_sec_container').style.marginLeft = '-5%';
+        document.querySelector('#broadcasts').style.marginLeft = '5%';
+        document.querySelector('#vid_displays').style.marginLeft = '-3%';
+        document.querySelector('#timer_stopwht').style.maxWidth = '100%';
+        document.querySelector('#timer_stopwht').style.marginLeft = '4%';
+    }
+
+    };
+
+</script>
+
+</body>
+
+</html>

@@ -1,0 +1,16 @@
+Run server
+Natively
+
+If you don't want to develop anything, just enter few commands below.
+
+    Install the package globally:
+
+    $ npm install peer -g
+
+    Run the server:
+
+    $ peerjs --port 9000 --key peerjs --path /myapp
+
+      Started PeerServer on ::, port: 9000, path: /myapp (v. 0.3.2)
+
+    Check it: http://127.0.0.1:9000/myapp It should returns JSON with name, description and website fields.
