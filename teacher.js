@@ -108,13 +108,13 @@
         $createKlass.on('click', function (e) {
 // create peer object with server details
             var myselfId = $myselfId.val();
-            // peerTeacher = new Peer(myselfId);
+            peerTeacher = new Peer(myselfId);
 
-            const peerTeacher = new Peer( myselfId , {
-              host: 'localhost',
-              port: 9000,
-              path: '/myapp'
-            });
+            // const peerTeacher = new Peer( myselfId , {
+            //   host: 'localhost',
+            //   port: 9000,
+            //   path: '/myapp'
+            // });
 
 // capture server not available
             if ( (peerTeacher._open == false)	) {

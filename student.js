@@ -65,13 +65,13 @@
       
       // create peer object
         var myselfId = $myselfId.val();
-        // peerClient = new Peer(myselfId);
+        peerClient = new Peer(myselfId);
 
-        const peerClient = new Peer( myselfId , {
-          host: 'localhost',
-          port: 9000,
-          path: '/myapp'
-        });
+        // const peerClient = new Peer( myselfId , {
+        //   host: 'localhost',
+        //   port: 9000,
+        //   path: '/myapp'
+        // });
 
         // if peer connection is opened
         peerClient.on('open', function() {
