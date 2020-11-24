@@ -192,7 +192,7 @@
                 }
 
                 $("#loading").attr("hidden", true);
-            }, 6000);
+            }, 5000);
     
           // if connection is closed
           call.on('close', function() {
@@ -220,7 +220,7 @@
         Swal.fire("Left Class!","","success");
 
         peerClient.destroy();
-        
+
         //stop the stop-watch
         $(".chat-stopwatch").stopwatch().stopwatch("stop");
 
