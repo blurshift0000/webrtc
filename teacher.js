@@ -117,25 +117,32 @@
             // });
 
 // capture server not available
-            if ( (peerTeacher._open == false)	) {
 
-				Swal.fire({
-					icon: 'error',
-					title: 'Server Not available !',
-					html: 'Contact Your Admin.',
-					timer: 600000,
-					animation:!1,
-					onBeforeOpen: () => {
-					Swal.showLoading()
-					}
-				}).then( function(e){ 
-		          document.querySelector('#js-open').disabled = false;
-		          });
+        $('#loading').removeAttr('hidden');
+        setTimeout(function () { 
 
-    			document.querySelector('.swal2-loader').style.borderColor =
-    			 '#F27474 transparent #F27474 transparent';
+            $("#loading").attr("hidden", true);
 
+            if ( (peerTeacher._open == false)   ) {
+
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Server Not available !',
+                    html: 'Contact Your Admin.',
+                    timer: 600000,
+                    animation:!1,
+                    onBeforeOpen: () => {
+                    Swal.showLoading()
+                    }
+                }).then( function(e){ 
+                  document.querySelector('#js-open').disabled = false;
+                  });
+
+                document.querySelector('.swal2-loader').style.borderColor =
+                 '#F27474 transparent #F27474 transparent';
             }
+                
+        }, 3000);
 
 // if peer connection is opened
             peerTeacher.on('open', function () {
@@ -144,6 +151,9 @@
 
                 //set the class title
                 document.querySelector('#class_session_id').innerHTML = "Class Session : " + peerTeacher.id;
+
+                //hide the preloader
+                $("#loading").attr("hidden", true);
             });
 
 // answer with my media stream
