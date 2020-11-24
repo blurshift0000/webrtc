@@ -196,8 +196,8 @@
                                         <i class="mdi mdi-dots-horizontal"></i>
                                     </a>
                                     <div class="dropdown-menu dropdown-menu-right">
-                                    <div class="dropdown-item bg-success select_student_str" id = 
-                                    "`+call.peer+`"> 
+                                    <div class="dropdown-item bg-success select_student_str" 
+                                    id = "`+call.peer+`" >
                                         <i class="mdi mdi-video-outline"></i>
                                     </div>
                                     <div class="dropdown-item bg-danger" style="font-size: 11px;"

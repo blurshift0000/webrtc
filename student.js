@@ -163,6 +163,9 @@
             //enable the leave class
             document.querySelector('#leave_class').disabled = false;
 
+            //hide the hidden preloader
+            $("#loading").attr("hidden", true);
+
             Swal.fire( "Class "+partnerId+" Joined.","","success");
 
             // set the stopwatch
@@ -215,7 +218,11 @@
             animation:!1}).then(
         function(e){ if(e.isConfirmed){
         Swal.fire("Left Class!","","success");
+
         peerClient.destroy();
+        //stop the stop-watch
+        $(".chat-stopwatch").stopwatch().stopwatch("stop");
+        
         }});
         
         //enable the leave class
