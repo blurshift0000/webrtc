@@ -220,9 +220,10 @@
         Swal.fire("Left Class!","","success");
 
         peerClient.destroy();
+        
         //stop the stop-watch
         $(".chat-stopwatch").stopwatch().stopwatch("stop");
-        
+
         }});
         
         //enable the leave class
