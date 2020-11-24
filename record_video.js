@@ -116,9 +116,14 @@
             //stop the recording
             $('#loading').removeAttr('hidden');
             setTimeout(function () { 
+
                 mRecordRTC.save();
+                
                 $("#loading").attr("hidden", true);
                 }, 2000);
+
+            //stop the stop-watch
+            $(".chat-stopwatch").stopwatch().stopwatch("stop");
 
             }});
 

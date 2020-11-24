@@ -174,16 +174,22 @@
           });
         
           //capture stream not received
-          if ( check_received_stream == false ) {
-            Swal.fire( "Problem Connecting To Class!","","error");
 
-            //disable the join class
-            document.querySelector('#js-connect').disabled = false;
+          //set time out after 6 seconds
 
-            //enable the leave class
-            document.querySelector('#leave_class').disabled = true;
+           $('#loading').removeAttr('hidden');
+              setTimeout(function () {
 
-          }
+                if ( check_received_stream == false ) {
+                  Swal.fire( "Problem Connecting To Class!","","error");
+                  //disable the join class
+                  document.querySelector('#js-connect').disabled = false;
+                  //enable the leave class
+                  document.querySelector('#leave_class').disabled = true;
+                }
+
+                $("#loading").attr("hidden", true);
+            }, 6000);
     
           // if connection is closed
           call.on('close', function() {
