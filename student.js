@@ -192,6 +192,7 @@
                 }
 
                 $("#loading").attr("hidden", true);
+                
             }, 5000);
     
           // if connection is closed

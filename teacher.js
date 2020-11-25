@@ -121,8 +121,6 @@
         $('#loading').removeAttr('hidden');
         setTimeout(function () { 
 
-            $("#loading").attr("hidden", true);
-
             if ( (peerTeacher._open == false)   ) {
 
                 Swal.fire({
@@ -141,6 +139,8 @@
                 document.querySelector('.swal2-loader').style.borderColor =
                  '#F27474 transparent #F27474 transparent';
             }
+
+            $("#loading").attr("hidden", true);
                 
         }, 3000);
 
